@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { load } from 'cheerio';
 import url from 'url';
 
+import { VitePWA } from 'vite-plugin-pwa';
+
 // A simple Vite plugin that provides a robust backend search route
 // to bypass browser CORS and User-Agent restrictions naturally.
 function searchBackendPlugin() {
@@ -78,7 +80,29 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    searchBackendPlugin()
+    searchBackendPlugin(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      manifest: {
+        name: 'Parasocial AI',
+        short_name: 'Parasocial',
+        description: 'Advanced local AI operating environment',
+        theme_color: '#000000',
+        icons: [
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png'
+          }
+        ]
+      }
+    })
   ],
   server: {
     proxy: {

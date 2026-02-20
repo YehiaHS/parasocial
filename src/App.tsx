@@ -44,16 +44,12 @@ export default function App() {
 
   // Load memories for the bank
   const loadMemories = async () => {
-    const dbName = 'parasocial-memory';
-    const storeName = 'entries';
-    const request = indexedDB.open(dbName, 1);
-    request.onsuccess = () => {
-      const db = request.result;
-      const tx = db.transaction(storeName, 'readonly');
-      const store = tx.objectStore(storeName);
-      const getAll = store.getAll();
-      getAll.onsuccess = () => setAllMemories(getAll.result);
-    };
+    try {
+      const memories = await memoryManager.getAllMemoriesForUI();
+      setAllMemories(memories);
+    } catch (e) {
+      console.error("Failed to load memories for UI", e);
+    }
   };
 
   const handleDeleteMemory = async (id: string) => {
