@@ -22,7 +22,7 @@ export async function encryptData(data: string, key: CryptoKey): Promise<{ encry
     const enc = new TextEncoder();
     const iv = crypto.getRandomValues(new Uint8Array(12));
     const encrypted = await crypto.subtle.encrypt(
-        { name: ALGO, iv },
+        { name: ALGO, iv: iv as any },
         key,
         enc.encode(data)
     );
@@ -32,7 +32,7 @@ export async function encryptData(data: string, key: CryptoKey): Promise<{ encry
 export async function decryptData(encrypted: ArrayBuffer, iv: Uint8Array, key: CryptoKey): Promise<string> {
     const dec = new TextDecoder();
     const decrypted = await crypto.subtle.decrypt(
-        { name: ALGO, iv },
+        { name: ALGO, iv: iv as any },
         key,
         encrypted
     );
